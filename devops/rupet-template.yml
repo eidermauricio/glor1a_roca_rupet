@@ -1,0 +1,20 @@
+# RUPET Pipeline
+# The TIA - Team!
+  
+steps:
+- task: Xther-Deployment@0
+  inputs:
+    installDir: '$(Build.SourcesDirectory)/maccli/selenium/'
+    resources: 'CHR'
+
+- task: PowerShell@2
+  displayName: 'Running robot'
+  inputs:    
+    targetType: 'inline'
+    script: |
+      chmod 777 '$(Build.SourcesDirectory)/maccli/selenium/chromedriver'
+      for ($num = 1; $num -lt $(threads); $num++)
+      {
+        nohup dotnet maccli/Gsqa.Tools.AiMaps.Console.dll src='maps/ttDemoRupet.aimj' csv='$(Build.SourcesDirectory)/maps/ttDemoRupet.csv' VarLoadSettings.IterationId='$(iterationId)' VarLoadSettings.ApplicationVersion='$(applicationVersion)' VarLoadSettings.BotName='$(botName)' VarLoadSettings.BotAuthor='$(botAuthor)' &
+      }
+      dotnet maccli/Gsqa.Tools.AiMaps.Console.dll src='maps/ttDemoRupet.aimj' csv='$(Build.SourcesDirectory)/maps/ttDemoRupet.csv' VarLoadSettings.IterationId='$(iterationId)' VarLoadSettings.ApplicationVersion='$(applicationVersion)' VarLoadSettings.BotName='$(botName)' VarLoadSettings.BotAuthor='$(botAuthor)'
