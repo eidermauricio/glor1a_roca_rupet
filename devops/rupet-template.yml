@@ -11,28 +11,30 @@ steps:
   displayName: 'Agent OS'
 
 - task: Xther-Deployment@0
-  # condition: eq('$(Agent.OS)', 'Darwin')
+  
   inputs:
     installDir: '$(Build.SourcesDirectory)/xther/'
     resources: 'CHR'
   displayName: 'Xther install'
 
-- task: PowerShell@2
-  displayName: 'Running robots'
+- task: PowerShell@2  
+  condition: eq('$(Agent.OS)', 'Darwin')
   inputs:    
     targetType: 'inline'
     script: |
-      if ('$(Agent.OS)' -eq 'Darwin')
+      cp -R '$(Build.SourcesDirectory)/xther/' '$(Build.SourcesDirectory)/aimaps_cli/mac/'
+      chmod 777 '$(Build.SourcesDirectory)/aimaps_cli/mac/selenium/chromedriver'
+      for ($num = 1; $num -lt $(threads); $num++)
       {
-        cp -R '$(Build.SourcesDirectory)/xther/' '$(Build.SourcesDirectory)/aimaps_cli/mac/'
-        chmod 777 '$(Build.SourcesDirectory)/aimaps_cli/mac/selenium/chromedriver'
-        for ($num = 1; $num -lt $(threads); $num++)
-        {
-          nohup dotnet aimaps_cli/mac/Gsqa.Tools.AiMaps.Console.dll src='maps/ttDemoRupet.aimj' csv='$(Build.SourcesDirectory)/maps/ttDemoRupet.csv' VarLoadSettings.IterationId='$(iterationId)' VarLoadSettings.ApplicationVersion='$(applicationVersion)' VarLoadSettings.BotName='$(botName)' VarLoadSettings.BotAuthor='$(botAuthor)' &
-        }
-        dotnet aimaps_cli/mac/Gsqa.Tools.AiMaps.Console.dll src='maps/ttDemoRupet.aimj' csv='$(Build.SourcesDirectory)/maps/ttDemoRupet.csv' VarLoadSettings.IterationId='$(iterationId)' VarLoadSettings.ApplicationVersion='$(applicationVersion)' VarLoadSettings.BotName='$(botName)' VarLoadSettings.BotAuthor='$(botAuthor)'
+        nohup dotnet aimaps_cli/mac/Gsqa.Tools.AiMaps.Console.dll src='maps/ttDemoRupet.aimj' csv='$(Build.SourcesDirectory)/maps/ttDemoRupet.csv' VarLoadSettings.IterationId='$(iterationId)' VarLoadSettings.ApplicationVersion='$(applicationVersion)' VarLoadSettings.BotName='$(botName)' VarLoadSettings.BotAuthor='$(botAuthor)' &
       }
-      elseif ('$(Agent.OS)' -eq 'Windows_NT')
-      {
-        Write-Host "Windows not implemented"
-      }
+      dotnet aimaps_cli/mac/Gsqa.Tools.AiMaps.Console.dll src='maps/ttDemoRupet.aimj' csv='$(Build.SourcesDirectory)/maps/ttDemoRupet.csv' VarLoadSettings.IterationId='$(iterationId)' VarLoadSettings.ApplicationVersion='$(applicationVersion)' VarLoadSettings.BotName='$(botName)' VarLoadSettings.BotAuthor='$(botAuthor)'
+  displayName: 'Running robots'
+
+- task: PowerShell@2  
+  condition: eq('$(Agent.OS)', 'Windows_NT')
+  inputs:    
+    targetType: 'inline'
+    script: |
+      Write-Host "Windows not implemented"
+  displayName: 'Running robots'
