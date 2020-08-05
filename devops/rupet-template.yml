@@ -1,24 +1,24 @@
 # RUPET Pipeline
 # The TIA - Team!
 
+parameters:
+- name: agentOS
+  type: string
+  default: 'x'
+
 steps:
 - script: |
     curl https://api.ipify.org/
   displayName: 'IP info'
 
-- script: |
-    echo $(Agent.OS)
-  displayName: 'Agent OS'
-
-- task: Xther-Deployment@0
-  
+- task: Xther-Deployment@0  
   inputs:
     installDir: '$(Build.SourcesDirectory)/xther/'
     resources: 'CHR'
   displayName: 'Xther install'
 
 - task: PowerShell@2  
-  condition: eq('Darwin', 'Darwin')
+  condition: eq(${{parameters.agentOS}}, 'Darwin')
   inputs:    
     targetType: 'inline'
     script: |
@@ -29,12 +29,17 @@ steps:
         nohup dotnet aimaps_cli/mac/Gsqa.Tools.AiMaps.Console.dll src='maps/ttDemoRupet.aimj' csv='$(Build.SourcesDirectory)/maps/ttDemoRupet.csv' VarLoadSettings.IterationId='$(iterationId)' VarLoadSettings.ApplicationVersion='$(applicationVersion)' VarLoadSettings.BotName='$(botName)' VarLoadSettings.BotAuthor='$(botAuthor)' &
       }
       dotnet aimaps_cli/mac/Gsqa.Tools.AiMaps.Console.dll src='maps/ttDemoRupet.aimj' csv='$(Build.SourcesDirectory)/maps/ttDemoRupet.csv' VarLoadSettings.IterationId='$(iterationId)' VarLoadSettings.ApplicationVersion='$(applicationVersion)' VarLoadSettings.BotName='$(botName)' VarLoadSettings.BotAuthor='$(botAuthor)'
-  displayName: 'Running robots'
+  displayName: 'Running robots - MAC'
 
 - task: PowerShell@2  
-  condition: eq('Darwin', 'Windows_NT')
+  condition: eq(${{parameters.agentOS}}, 'Windows_NT')
   inputs:    
     targetType: 'inline'
     script: |
-      Write-Host "Windows not implemented"
-  displayName: 'Running robots'
+      Copy-Item '$(Build.SourcesDirectory)/xther/' '$(Build.SourcesDirectory)/aimaps_cli/win/'
+      for ($num = 1; $num -lt $(threads); $num++)
+      {
+        start /b dotnet aimaps_cli/win/Gsqa.Tools.AiMaps.Console.dll src='maps/ttDemoRupet.aimj' csv='$(Build.SourcesDirectory)/maps/ttDemoRupet.csv' VarLoadSettings.IterationId='$(iterationId)' VarLoadSettings.ApplicationVersion='$(applicationVersion)' VarLoadSettings.BotName='$(botName)' VarLoadSettings.BotAuthor='$(botAuthor)' &
+      }
+      dotnet aimaps_cli/win/Gsqa.Tools.AiMaps.Console.dll src='maps/ttDemoRupet.aimj' csv='$(Build.SourcesDirectory)/maps/ttDemoRupet.csv' VarLoadSettings.IterationId='$(iterationId)' VarLoadSettings.ApplicationVersion='$(applicationVersion)' VarLoadSettings.BotName='$(botName)' VarLoadSettings.BotAuthor='$(botAuthor)'
+  displayName: 'Running robots - WIN'
