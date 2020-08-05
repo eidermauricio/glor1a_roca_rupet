@@ -1,13 +1,6 @@
 # RUPET Pipeline
 # The TIA - Team!
 
-strategy:
-  matrix:
-    mac:
-      imageName: 'macos-10.14'
-    windows:
-      imageName: 'windows-latest'
-  
 steps:
 - script: |
     curl https://api.ipify.org/
