@@ -1,19 +1,10 @@
 # RUPET Pipeline
 # The TIA - Team!
 
-parameters:
-- name: agentOS
-  type: string
-  default: 'x'
-
 steps:
 - script: |
     curl https://api.ipify.org/
   displayName: 'IP info'
-
-- script: |
-    echo '${{parameters.agentOS}}'
-  displayName: 'Agent OS'
 
 - task: Xther-Deployment@0  
   inputs:
@@ -22,7 +13,7 @@ steps:
   displayName: 'Xther install'
 
 - task: PowerShell@2  
-  condition: eq(${{parameters.agentOS}}, 'Darwin')
+  condition: eq( $(agentImage), 'macos-10.14')
   inputs:    
     targetType: 'inline'
     script: |
@@ -36,7 +27,7 @@ steps:
   displayName: 'Running robots - MAC'
 
 - task: PowerShell@2  
-  condition: eq(${{parameters.agentOS}}, 'Windows_NT')
+  condition: eq( $(agentImage), 'windows-latest')
   inputs:    
     targetType: 'inline'
     script: |
