@@ -11,10 +11,11 @@ steps:
   displayName: 'Agent OS'
 
 - task: Xther-Deployment@0
+  # condition: eq('$(Agent.OS)', 'Darwin')
   inputs:
-    installDir: '$(Build.SourcesDirectory)/aimaps_cli/mac/selenium/'
+    installDir: '$(Build.SourcesDirectory)/xther/'
     resources: 'CHR'
-  displayName: 'Xther MAC install'
+  displayName: 'Xther install'
 
 - task: PowerShell@2
   displayName: 'Running robots'
@@ -23,6 +24,7 @@ steps:
     script: |
       if ('$(Agent.OS)' -eq 'Darwin')
       {
+        cp -R '$(Build.SourcesDirectory)/xther/' '$(Build.SourcesDirectory)/aimaps_cli/mac/'
         chmod 777 '$(Build.SourcesDirectory)/aimaps_cli/mac/selenium/chromedriver'
         for ($num = 1; $num -lt $(threads); $num++)
         {
