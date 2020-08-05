@@ -14,7 +14,7 @@ steps:
   inputs:
     installDir: '$(Build.SourcesDirectory)/maccli/selenium/'
     resources: 'CHR'
-  displayName: 'Xther Deployment'
+  displayName: 'Xther MAC install'
 
 - task: PowerShell@2
   displayName: 'Running robots'
@@ -26,9 +26,9 @@ steps:
         chmod 777 '$(Build.SourcesDirectory)/maccli/selenium/chromedriver'
         for ($num = 1; $num -lt $(threads); $num++)
         {
-          nohup dotnet maccli/Gsqa.Tools.AiMaps.Console.dll src='maps/ttDemoRupet.aimj' csv='$(Build.SourcesDirectory)/maps/ttDemoRupet.csv' VarLoadSettings.IterationId='$(iterationId)' VarLoadSettings.ApplicationVersion='$(applicationVersion)' VarLoadSettings.BotName='$(botName)' VarLoadSettings.BotAuthor='$(botAuthor)' &
+          nohup dotnet run maccli/Gsqa.Tools.AiMaps.Console.dll src='maps/ttDemoRupet.aimj' csv='$(Build.SourcesDirectory)/maps/ttDemoRupet.csv' VarLoadSettings.IterationId='$(iterationId)' VarLoadSettings.ApplicationVersion='$(applicationVersion)' VarLoadSettings.BotName='$(botName)' VarLoadSettings.BotAuthor='$(botAuthor)' &
         }
-        dotnet maccli/Gsqa.Tools.AiMaps.Console.dll src='maps/ttDemoRupet.aimj' csv='$(Build.SourcesDirectory)/maps/ttDemoRupet.csv' VarLoadSettings.IterationId='$(iterationId)' VarLoadSettings.ApplicationVersion='$(applicationVersion)' VarLoadSettings.BotName='$(botName)' VarLoadSettings.BotAuthor='$(botAuthor)'
+        dotnet run maccli/Gsqa.Tools.AiMaps.Console.dll src='maps/ttDemoRupet.aimj' csv='$(Build.SourcesDirectory)/maps/ttDemoRupet.csv' VarLoadSettings.IterationId='$(iterationId)' VarLoadSettings.ApplicationVersion='$(applicationVersion)' VarLoadSettings.BotName='$(botName)' VarLoadSettings.BotAuthor='$(botAuthor)'
       }
       elseif ('$(imageName)' -eq 'windows-latest')
       {
