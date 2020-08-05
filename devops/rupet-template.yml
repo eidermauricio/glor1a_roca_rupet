@@ -10,15 +10,23 @@ steps:
   inputs:
     installDir: '$(Build.SourcesDirectory)/maccli/selenium/'
     resources: 'CHR'
+  displayName: 'Xther Deployment'
 
 - task: PowerShell@2
-  displayName: 'Running robot'
+  displayName: 'Running robots'
   inputs:    
     targetType: 'inline'
     script: |
-      chmod 777 '$(Build.SourcesDirectory)/maccli/selenium/chromedriver'
-      for ($num = 1; $num -lt $(threads); $num++)
+      if ($(imageName) -eq 'macos-10.14')
       {
-        nohup dotnet maccli/Gsqa.Tools.AiMaps.Console.dll src='maps/ttDemoRupet.aimj' csv='$(Build.SourcesDirectory)/maps/ttDemoRupet.csv' VarLoadSettings.IterationId='$(iterationId)' VarLoadSettings.ApplicationVersion='$(applicationVersion)' VarLoadSettings.BotName='$(botName)' VarLoadSettings.BotAuthor='$(botAuthor)' &
+        chmod 777 '$(Build.SourcesDirectory)/maccli/selenium/chromedriver'
+        for ($num = 1; $num -lt $(threads); $num++)
+        {
+          nohup dotnet maccli/Gsqa.Tools.AiMaps.Console.dll src='maps/ttDemoRupet.aimj' csv='$(Build.SourcesDirectory)/maps/ttDemoRupet.csv' VarLoadSettings.IterationId='$(iterationId)' VarLoadSettings.ApplicationVersion='$(applicationVersion)' VarLoadSettings.BotName='$(botName)' VarLoadSettings.BotAuthor='$(botAuthor)' &
+        }
+        dotnet maccli/Gsqa.Tools.AiMaps.Console.dll src='maps/ttDemoRupet.aimj' csv='$(Build.SourcesDirectory)/maps/ttDemoRupet.csv' VarLoadSettings.IterationId='$(iterationId)' VarLoadSettings.ApplicationVersion='$(applicationVersion)' VarLoadSettings.BotName='$(botName)' VarLoadSettings.BotAuthor='$(botAuthor)'
       }
-      dotnet maccli/Gsqa.Tools.AiMaps.Console.dll src='maps/ttDemoRupet.aimj' csv='$(Build.SourcesDirectory)/maps/ttDemoRupet.csv' VarLoadSettings.IterationId='$(iterationId)' VarLoadSettings.ApplicationVersion='$(applicationVersion)' VarLoadSettings.BotName='$(botName)' VarLoadSettings.BotAuthor='$(botAuthor)'
+      elseif ($(imageName) -eq'windows-latest')
+      {
+        Write-Host "Windows not implemented"
+      }

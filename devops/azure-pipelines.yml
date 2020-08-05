@@ -4,8 +4,15 @@
 trigger:
 - master
 
+strategy:
+  matrix:
+    mac:
+      imageName: 'macos-10.14'
+    windows:
+      imageName: 'windows-latest'
+
 pool:
-  vmImage: 'macOS-10.14'
+  vmImage: $(imageName)
 
 jobs:
 - job: LoadAgentNode1
