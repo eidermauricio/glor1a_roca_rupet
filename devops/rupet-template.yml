@@ -6,6 +6,10 @@ steps:
     curl https://api.ipify.org/
   displayName: 'IP info'
 
+- script: |
+    echo $(imageName)
+  displayName: 'VM OS name'
+
 - task: Xther-Deployment@0
   inputs:
     installDir: '$(Build.SourcesDirectory)/maccli/selenium/'
@@ -17,7 +21,7 @@ steps:
   inputs:    
     targetType: 'inline'
     script: |
-      if ($(imageName) -eq 'macos-10.14')
+      if ('$(imageName)' -eq 'macos-10.14')
       {
         chmod 777 '$(Build.SourcesDirectory)/maccli/selenium/chromedriver'
         for ($num = 1; $num -lt $(threads); $num++)
@@ -26,7 +30,7 @@ steps:
         }
         dotnet maccli/Gsqa.Tools.AiMaps.Console.dll src='maps/ttDemoRupet.aimj' csv='$(Build.SourcesDirectory)/maps/ttDemoRupet.csv' VarLoadSettings.IterationId='$(iterationId)' VarLoadSettings.ApplicationVersion='$(applicationVersion)' VarLoadSettings.BotName='$(botName)' VarLoadSettings.BotAuthor='$(botAuthor)'
       }
-      elseif ($(imageName) -eq'windows-latest')
+      elseif ('$(imageName)' -eq 'windows-latest')
       {
         Write-Host "Windows not implemented"
       }
