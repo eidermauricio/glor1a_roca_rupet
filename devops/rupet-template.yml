@@ -2,6 +2,10 @@
 # The TIA - Team!
   
 steps:
+- script: |
+    curl https://api.ipify.org/
+  displayName: 'IP info'
+
 - task: Xther-Deployment@0
   inputs:
     installDir: '$(Build.SourcesDirectory)/maccli/selenium/'
