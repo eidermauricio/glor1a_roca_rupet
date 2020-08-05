@@ -4,18 +4,15 @@
 trigger:
 - master
 
+pool:
+  vmImage: $(agentImage)
+
 jobs:
 - job: LoadAgentNode1
   displayName: Rupet1
   continueOnError: true
   workspace:
     clean: outputs
-  strategy:
-    matrix:
-      mac:
-        imageName: 'macos-10.14'
-      windows:
-        imageName: 'windows-latest'
   steps:
     - template: rupet-template.yml
 
