@@ -7,8 +7,8 @@ steps:
   displayName: 'IP info'
 
 - script: |
-    echo $(imageName)
-  displayName: 'VM OS name'
+    echo $(Agent.OS)
+  displayName: 'Agent OS'
 
 - task: Xther-Deployment@0
   inputs:
@@ -21,7 +21,7 @@ steps:
   inputs:    
     targetType: 'inline'
     script: |
-      if ('$(imageName)' -eq 'macos-10.14')
+      if ('$(Agent.OS)' -eq 'Darwin')
       {
         chmod 777 '$(Build.SourcesDirectory)/maccli/selenium/chromedriver'
         for ($num = 1; $num -lt $(threads); $num++)
@@ -30,7 +30,7 @@ steps:
         }
         dotnet run maccli/Gsqa.Tools.AiMaps.Console.dll src='maps/ttDemoRupet.aimj' csv='$(Build.SourcesDirectory)/maps/ttDemoRupet.csv' VarLoadSettings.IterationId='$(iterationId)' VarLoadSettings.ApplicationVersion='$(applicationVersion)' VarLoadSettings.BotName='$(botName)' VarLoadSettings.BotAuthor='$(botAuthor)'
       }
-      elseif ('$(imageName)' -eq 'windows-latest')
+      elseif ('$(Agent.OS)' -eq 'Windows_NT')
       {
         Write-Host "Windows not implemented"
       }
