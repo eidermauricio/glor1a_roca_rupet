@@ -18,7 +18,7 @@ steps:
   displayName: 'Xther install'
 
 - task: PowerShell@2  
-  condition: eq('$(Agent.OS)', 'Darwin')
+  condition: eq($(Agent.OS), 'Darwin')
   inputs:    
     targetType: 'inline'
     script: |
@@ -32,7 +32,7 @@ steps:
   displayName: 'Running robots'
 
 - task: PowerShell@2  
-  condition: eq('$(Agent.OS)', 'Windows_NT')
+  condition: eq($(Agent.OS), 'Windows_NT')
   inputs:    
     targetType: 'inline'
     script: |
