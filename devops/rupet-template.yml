@@ -13,7 +13,7 @@ steps:
   displayName: 'Xther install'
 
 - task: PowerShell@2  
-  condition: eq( $(agentImage), 'macos-10.14')
+  condition: eq( '$(agentImage)', 'macos-10.14')
   inputs:    
     targetType: 'inline'
     script: |
@@ -27,7 +27,7 @@ steps:
   displayName: 'Running robots - MAC'
 
 - task: PowerShell@2  
-  condition: eq( $(agentImage), 'windows-latest')
+  condition: eq( '$(agentImage)', 'windows-latest')
   inputs:    
     targetType: 'inline'
     script: |
