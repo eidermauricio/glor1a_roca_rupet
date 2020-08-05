@@ -11,6 +11,10 @@ steps:
     curl https://api.ipify.org/
   displayName: 'IP info'
 
+- script: |
+    echo '${{parameters.agentOS}}'
+  displayName: 'Agent OS'
+
 - task: Xther-Deployment@0  
   inputs:
     installDir: '$(Build.SourcesDirectory)/xther/'

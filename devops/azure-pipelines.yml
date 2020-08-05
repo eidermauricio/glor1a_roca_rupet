@@ -16,7 +16,7 @@ jobs:
   steps:
     - template: rupet-template.yml
       parameters:
-        agentOS: $(Agent.OS)
+        agentOS: '$(Agent.OS)'
 
 # - job: LoadAgentNode2
 #   displayName: Rupet2
