@@ -21,7 +21,7 @@ steps:
       {
         $cliEnv = 'win'
       }
-      $destinationFolder = '$(Build.SourcesDirectory)/aimaps_cli/$cliEnv/selenium/'
+      $destinationFolder = ("{0}/aimaps_cli/{1}/selenium/" -f $(Build.SourcesDirectory), $cliEnv)
       echo $destinationFolder
       if (!(Test-Path -path $destinationFolder)) {New-Item $destinationFolder -Type Directory}
       Copy-Item '$(Build.SourcesDirectory)/xther/*' $destinationFolder -Force -Recurse
