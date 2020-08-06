@@ -60,6 +60,8 @@ namespace GreenSQA.AiMaps.CustomLogic
 	{ 
 		if (this.mapExecutor.Rum == null){
 			this.mapExecutor.Rum = new RealUserMonitoring (thisModel.SeDriver, thisModel.ExecutionContext, this.mapExecutor.CorrelationString, rumTimeLimitMilliseconds); 
+		} else {
+			this.mapExecutor.Rum.SeDriver = thisModel.SeDriver;
 		}
 		
 		this.mapExecutor.Rum.ProjectInfoRum.BrowserName = thisModel.ExecutionContext.WebBrowserName;
