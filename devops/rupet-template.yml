@@ -34,7 +34,9 @@ steps:
       echo "XTHER dir..."
       dir '$(Build.SourcesDirectory)/xther/'
       echo "Copy selenium driver..."
-      cp -R '$(Build.SourcesDirectory)/xther/' '$(Build.SourcesDirectory)/aimaps_cli/win/'
+      $destinationFolder = '$(Build.SourcesDirectory)/aimaps_cli/win/selenium/chromedriver/'
+      if (!(Test-Path -path $destinationFolder)) {New-Item $destinationFolder -Type Directory}      
+      Copy-Item '$(Build.SourcesDirectory)/xther/*' $destinationFolder -Force -Recurse
       echo "AiMaps dir..."
       dir '$(Build.SourcesDirectory)/aimaps_cli/win/'
       for ($num = 1; $num -lt $(threads); $num++)
