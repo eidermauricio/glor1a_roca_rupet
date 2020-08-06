@@ -58,8 +58,12 @@ namespace GreenSQA.AiMaps.CustomLogic
 
 	public void InitRum(int rumTimeLimitMilliseconds = 120000) 
 	{ 
-		this.mapExecutor.Rum = new RealUserMonitoring (thisModel.SeDriver, thisModel.ExecutionContext, this.mapExecutor.CorrelationString, rumTimeLimitMilliseconds); 
-
+		if (this.mapExecutor.Rum == null){
+			this.mapExecutor.Rum = new RealUserMonitoring (thisModel.SeDriver, thisModel.ExecutionContext, this.mapExecutor.CorrelationString, rumTimeLimitMilliseconds); 
+		} else {
+			this.mapExecutor.Rum.SeDriver = thisModel.SeDriver;
+		}
+		
 		this.mapExecutor.Rum.ProjectInfoRum.BrowserName = thisModel.ExecutionContext.WebBrowserName;
 		this.mapExecutor.Rum.ProjectInfoRum.BrowserVersion = thisModel.ExecutionContext.WebBrowserVersion;
 		this.mapExecutor.Rum.ProjectInfoRum.BotAuthor = thisModel.Map.RobotAuthor;
