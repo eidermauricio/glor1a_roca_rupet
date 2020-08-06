@@ -32,9 +32,9 @@ steps:
     targetType: 'inline'
     script: |
       echo "XTHER dir..."
-      dir '$(Build.SourcesDirectory)/xther/*'
+      dir '$(Build.SourcesDirectory)/xther/'
       echo "Copy selenium driver..."
-      cp -R '$(Build.SourcesDirectory)/xther/*' '$(Build.SourcesDirectory)/aimaps_cli/win/'
+      cp -R '$(Build.SourcesDirectory)/xther/' '$(Build.SourcesDirectory)/aimaps_cli/win/'
       echo "AiMaps dir..."
       dir '$(Build.SourcesDirectory)/aimaps_cli/win/'
       for ($num = 1; $num -lt $(threads); $num++)
