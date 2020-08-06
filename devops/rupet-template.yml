@@ -31,7 +31,7 @@ steps:
   inputs:    
     targetType: 'inline'
     script: |
-      chmod 777 '$(Build.SourcesDirectory)/aimaps_cli/mac/selenium/chromedriver.exe'
+      chmod 777 '$(Build.SourcesDirectory)/aimaps_cli/mac/selenium/chromedriver'
       for ($num = 1; $num -lt $(threads); $num++)
       {
         nohup dotnet aimaps_cli/mac/Gsqa.Tools.AiMaps.Console.dll src='maps/ttDemoRupet.aimj' csv='$(Build.SourcesDirectory)/maps/ttDemoRupet.csv' VarLoadSettings.IterationId='$(iterationId)' VarLoadSettings.ApplicationVersion='$(applicationVersion)' VarLoadSettings.BotName='$(botName)' VarLoadSettings.BotAuthor='$(botAuthor)' &
